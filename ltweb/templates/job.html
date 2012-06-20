@@ -1,0 +1,38 @@
+<html>
+  <head>
+    <title>Output</title>
+    <script src="/static/jquery.js" type="text/javascript"></script>
+    <script src="/static/socket.io.js" type="text/javascript"></script>
+    <script src="/static/handlebars.js" type="text/javascript"></script>
+    <script src="/static/underscore.js" type="text/javascript"></script>
+    <script src="/static/backbone.js" type="text/javascript"></script>
+    <script src="/static/output.js" type="text/javascript"></script>
+    <link rel="stylesheet" type="text/css" href="/static/styles.css" />
+
+    <script type="text/javascript">
+      // globals
+      var {{job_id}};
+    </script>
+
+    <script id="out_item_template" type="text/x-handlebars-template">
+      <li>{{ out_line }}</li>
+    </script>
+
+    <script id="out_template" type="text/x-handlebars-template">
+      <h1>Output</h1>
+      <ul id="outlog">
+        {% for item in collection }}
+          <li>{{ item.out_line }}</li>
+        {% endfor %}
+      </ul>
+      <form id="out_form">
+        <input type="text" id="outbox"></input>
+        <button type="submit" id="submit">Send</button>
+      </form>
+    </script>
+  </head>
+  <body>
+    <div id="container">
+    </div>
+  </body>
+</html>

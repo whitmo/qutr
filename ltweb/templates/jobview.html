@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <title>aggie output streamer</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js" 
+            type="text/javascript" 
+            charset="utf-8"></script>
+    <script src="/static/agility/agility.min.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Cabin:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="/static/styles.css" />
+    <script type="text/javascript">
+      // globals
+      var job_id='{{job_id}}';
+    </script>
+    <script src="/static/socket.io.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <h1>Job {{job_id}}</h1>
+  <hidden style='display:none'>
+    <div id="lineformat">
+      <li><pre data-bind="content" /></li>
+    </div>
+    <div id="streamformat">
+      <div class="stream">
+        <button id="clear">clear</button>
+        <ul></ul>
+      </div>
+    </div>
+  </hidden>
+
+  <script src="/static/outputstream.js" type="text/javascript" charset="utf-8"></script>
+  </body>
+</html>
