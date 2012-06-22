@@ -34,7 +34,10 @@ setup(name='ltweb',
       test_suite="ltweb",
       entry_points = """\
       [paste.app_factory]
-      main = ltweb:main
+      main = ltweb.app:main
+
+      [console_scripts]
+      ltweb-gworker = ltweb.gworker:run_worker
       """,
       )
 
