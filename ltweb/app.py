@@ -1,9 +1,11 @@
+from . import utils
+from . import qutils
 from pyramid.config import Configurator
 from pyramid.decorator import reify
 from pyramid.request import Request as Base
 from pyramid_jinja2 import renderer_factory
-from retools import queue
 import gevent
+import inspect
 
 
 class Request(Base):
@@ -12,18 +14,23 @@ class Request(Base):
         return self.registry.settings
 
     @reify
-    def jobns(self):
-        return self.settings['ltweb.tasks'].strip()
+    def tasks(self):
+        return self.registry.tasks
 
-def launch_worker(settings):
-    q, interval, block = (settings['ltweb.q'], 
-                          settings['ltweb.q_interval'], 
-                          settings['ltweb.q_block'])
-    worker = queue.Worker(queues=[q])
-    block = False or block.lower() != 'false' 
-    worker.work(interval=float(interval), blocking=bool(block))
-    print "started worker: %s" %worker.worker_id
+    @reify
+    def enqueue(self):
+        return self.registry.qm.enqueue
 
+
+def load_tasks_list(spec):
+    taskns = utils.resolve(spec)
+    assert inspect.ismodule(taskns)
+    path = "%s.{0}" %taskns.__name__
+    is_task = qutils.Task.is_task
+    return sorted(dict(path=path.format(x), 
+                       **is_task(y)) for x, y in vars(taskns).items() \
+                      if not x.startswith('_') and is_task(y))
+    
 
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
@@ -35,12 +42,15 @@ def main(global_config, **settings):
     config.add_route('home', '/')
     config.add_route('tasks', '/api/tasks')
     config.add_route('jobs', '/api/jobs')
+    config.add_route('one23', '/api/jobs/1234')
     config.add_route('job_log', '/api/jobs/{job_id}')
     config.add_route('job_stream', '/{job_id}')
     config.scan()
     config.include('ltweb.io')
     config.set_request_factory(Request)
+    qutils.setup_queue_manager(config)
     if settings['ltweb.worker'] != 'false':
-        config.worker = gevent.spawn(launch_worker, settings)
+        config.worker = gevent.spawn(qutils.launch_worker, settings)
+    config.registry.tasks = load_tasks_list(settings['ltweb.tasks'].strip())
     return config.make_wsgi_app()
 
