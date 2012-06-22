@@ -1,0 +1,22 @@
+@import url(http://fonts.googleapis.com/css?family=Cabin); 
+
+body {
+  background-color: #888;
+  font-family: 'Trebuchet MS', Trebuchet, 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+#container {
+  margin: 0 auto;
+  width: 550px;
+  padding: 20px;
+  background-color: #FFF;
+}
+
+h1 {
+     font-family: 'Cabin';
+  margin: 0;
+  padding: 0;
+  border-bottom: solid 1px #000;
+  width: 80%;
+}
+
