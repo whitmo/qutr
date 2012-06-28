@@ -1,6 +1,10 @@
 from . import tee
 from .io import JobIO
 from contextlib import contextmanager
+from functools import partial
+from ltweb.io import jns
+#import traceback
+import json
 
 
 @contextmanager
@@ -11,16 +15,45 @@ def teed_ioout(func, job, **kw):
 
     caveat: imagine it only will work with true forking queues
     """
-    uid = func.uid = job.job_id
+    uid = func.uid 
 
-    print "Teeing output for %s" %uid
-    out = tee.sysout(JobIO(uid))
-    err = tee.syserr(JobIO(uid))
+    jobio = JobIO(uid, func.publish)
+
+    tee.sysout(jobio).set()
+    tee.syserr(jobio).set()
     try:
         yield
-    except :
-        import pdb;pdb.set_trace()
     finally:
-        print "UnTeeing output for %s" %func.uid
-        del out
-        del err
+        func.publish(dict(event='done'))
+        import sys
+        del sys.stdout
+        del sys.stderr
+ 
+
+
+@contextmanager
+def prep_job(func, job, **kw):
+    uid = func.uid = job.job_id
+    func.publish = partial(publish, job.worker.redis, uid)
+    try:
+        yield
+    finally:
+        print "Job Done"
+
+
+@contextmanager
+def visout(func, job, **kw):
+    try:
+        yield
+    finally:
+        print "VIZ Done"
+
+
+def publish(redis, uid, data):
+    if not isinstance(data, basestring):
+        data = json.dumps(data)
+    lkey = jns.job_key.format(job_id=uid)
+    skey = jns.sub_key.format(uid)    
+    redis.lpush(lkey, data)
+    redis.publish(skey, data)
+    return data, redis

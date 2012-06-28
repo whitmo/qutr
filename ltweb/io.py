@@ -9,13 +9,22 @@ class JobNamespace(BaseNamespace):
     job_key = "ltweb:job_out:{job_id}"
     sub_key = 'jobs:{0}'
 
+    def handle_data(self, data):
+        data = json.loads(data)
+        if 'event' in data:
+            return self.emit(data.pop('event'), data)
+        return self.emit("update", data)
+
     def listener(self, job_id):
         r = cxn.redis.pubsub()
         r.subscribe(self.sub_key.format(job_id))
         for m in r.listen():
             if m['type'] == 'message':
-                data = json.loads(m['data'])
-                self.emit("jobOut", data)
+                data = m['data']
+                if data.startswith("{"): #@@ why deserialize?
+                    self.handle_data(data)
+                elif data:
+                    self.emit("lineOut", data) 
 
     def on_subscribe(self, data):
         self.job_id = data['job_id']
@@ -30,6 +39,8 @@ class JobNamespace(BaseNamespace):
     #     # we got a new chat event from the client, send it out to
     #     # all the listeners
     #     r.publish('out', dumps(chat.serialize()))
+
+jns = JobNamespace
 
 
 class IndexNamespace(BaseNamespace):
@@ -55,22 +66,24 @@ class JobIO(StringIO):
     """
     list_key = JobNamespace.job_key
     pub_key = JobNamespace.sub_key
-    def __init__(self, uid, redis=None):
-        if redis is None:
-            redis = cxn.redis
-        self.redis = redis
-        self.lkey = self.list_key.format(job_id=uid)
-        self.skey = self.pub_key.format(uid)
+
+    def __init__(self, uid, publish):
+        self.publish = publish
 
     def flush(self):
         pass
     
     def write(self, line):
-        self.redis.lpush(self.lkey, line)
-        self.redis.publish(self.pub_key, line)
+        line = line.strip() # remove trailing newlines
+        if line:
+            self.publish(line)
 
     def close(self):
         pass
+
+    def __repr__(self):
+        #@@ test
+        return "<JobIO(log[{0}],sub[{1}])>".format(self.lkey, self.skey)
 
 
 def includeme(config):

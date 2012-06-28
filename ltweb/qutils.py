@@ -1,5 +1,6 @@
 from retools import queue
 import inspect
+from functools import partial
 
 
 class Task(dict):
@@ -25,16 +26,22 @@ class Task(dict):
         return None
 
 
+
 def task(*args, **kwargs):
     if len(args) == 1:
         return Task()(args[0])
     return Task(*args, **kwargs)
 
 
-default_subscribers = dict(job_wrapper='ltweb.qsubs:teed_ioout')
+iotask = partial(task, events=dict(job_wrapper='ltweb.qsubs:teed_ioout'))
+viztask = partial(task, events=dict(job_wrapper='ltweb.qsubs:visout'))
 
-def setup_queue_manager(config, subscribers=default_subscribers):
+
+def setup_queue_manager(config, subscribers=dict(job_wrapper='ltweb.qsubs:prep_job')):
+    if subscribers is None:
+        subscribers = {}
     config.registry.qm = queue.QueueManager(subscribers=subscribers)
+
 
 def launch_worker(settings):
     q, interval, block = (settings['ltweb.q'], 

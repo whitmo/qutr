@@ -1,7 +1,10 @@
+from . import io
 from pyramid.view import view_config
 from retools import global_connection as cxn
-from . import io
+import json
+import logging
 
+logger = logging.getLogger(__name__)
 
 @view_config(route_name='home', renderer='index.html')
 def hp(request):
@@ -14,34 +17,33 @@ def index(request):
     return request.matchdict
 
 
-@view_config(route_name='job_log', renderer='json')
-def get_backlog(request, key=io.JobNamespace.job_key):
+@view_config(route_name='job', renderer='json', xhr=True)
+def job(request, key=io.JobNamespace.job_key, xhr=True):
     """
     Grabs entire backlog from redis.
     """
+    uid = request.matchdict['job_id']
     jobkey = key.format(**request.matchdict)
-    return cxn.redis.lrange(jobkey, 0, -1)
+    logger.info(jobkey)
+    lines = cxn.redis.lrange(jobkey, 0, -1) or []
+    return dict(uid=uid, lines=lines)
 
 
-@view_config(route_name='tasks', renderer='json')
+@view_config(route_name='tasks', renderer='json', xhr=True)
 def tasks_api(request):
     return request.tasks
 
 
-@view_config(route_name='one23', renderer='json')
-def one23(request):
-    return dict(path='path',
-                url='url',
-                uid='1234') 
-
-
-@view_config(route_name='jobs', renderer='json')
+@view_config(route_name='jobs', renderer='json', xhr=True)
 def jobs(request):
     if request.method == 'POST':
         path = request.POST['path']
         uid = request.enqueue(path)
-        request.response.headers.add('Location', "%s/%s" %(request.application_url, uid))
-        return dict(path=path, uid=uid)
+        skey = io.jns.sub_key.format(uid)
+        cxn.redis.publish(skey, json.dumps(dict(state="queued")))
+        url = "{0}/{1}".format(request.application_url, uid)
+        request.response.headers.add('Location', url)
+        return dict(uid=uid)
     raise NotImplemented(request.method)
 
 

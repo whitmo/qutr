@@ -18,8 +18,19 @@ class Request(Base):
         return self.registry.tasks
 
     @reify
-    def enqueue(self):
-        return self.registry.qm.enqueue
+    def qm(self):
+        return self.registry.qm
+        
+    def enqueue(self, job, **kw):
+        func = self.qm.resolve(job)
+        taskmeta = qutils.Task.is_task(func)
+        if 'events' in taskmeta:
+            [self.qm.subscriber(event,
+                               job=job,
+                               handler=spec) \
+             for event, spec in taskmeta['events'].items()]
+                
+        return self.qm.enqueue(job, **kw)
 
 
 def load_tasks_list(spec):
@@ -29,7 +40,7 @@ def load_tasks_list(spec):
     is_task = qutils.Task.is_task
     return sorted(dict(path=path.format(x), 
                        **is_task(y)) for x, y in vars(taskns).items() \
-                      if not x.startswith('_') and is_task(y))
+                  if not x.startswith('_') and is_task(y))
     
 
 def main(global_config, **settings):
@@ -38,12 +49,11 @@ def main(global_config, **settings):
     config = Configurator(settings=settings)
     config.add_renderer('.html', renderer_factory)
     config.include('pyramid_jinja2')
-    config.add_static_view('static', 'static', cache_max_age=360)
+    config.add_static_view('static', 'static')
     config.add_route('home', '/')
     config.add_route('tasks', '/api/tasks')
     config.add_route('jobs', '/api/jobs')
-    config.add_route('one23', '/api/jobs/1234')
-    config.add_route('job_log', '/api/jobs/{job_id}')
+    config.add_route('job', '/api/jobs/{job_id}')
     config.add_route('job_stream', '/{job_id}')
     config.scan()
     config.include('ltweb.io')

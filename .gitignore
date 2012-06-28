@@ -1,5 +1,7 @@
 #*
 *~
+*.cache
+*.lock
 *.egg-info
 *.pyc
 /.coverage

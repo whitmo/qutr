@@ -6,17 +6,95 @@ body {
 }
 
 #container {
-  margin: 0 auto;
-  width: 550px;
-  padding: 20px;
-  background-color: #FFF;
+             margin: 0 auto;
+             width: 70%;
+             padding: 20px;
+             background-color: #FFF;
+             height: 100%;
+             overflow: auto;
 }
 
 h1 {
      font-family: 'Cabin';
   margin: 0;
   padding: 0;
-  border-bottom: solid 1px #000;
-  width: 80%;
+  border-bottom: solid 1px #AAA;
 }
 
+h1 a:link{  
+      color: black;
+      text-decoration: none;
+}
+
+h1 a:visited{
+      color: black;
+}  
+
+iframe {  
+         width: 100%;
+         display: block;
+         height: 100%;
+         margin: 3px;
+         border: 4px black;   
+         overflow-x: hidden; 
+         overflow-y: auto; 
+         overflow: auto;
+}
+
+li.outputline {  
+                list-style-type:none;
+                margin: 0px 1px 0px;
+                font-family: Courier;
+                background: #black;
+                color: #5F5;
+}
+
+taskgroup {  
+            border-bottom: 1px dotted black;
+}
+.clearall{  
+            clear: both;
+}
+.task {
+        background: #AAA;
+        margin: 3px; 
+        padding: 25px 25px 1px;
+        float: left;
+        display: block;
+        overflow: auto;
+ 
+}
+
+dd{  
+    margin-bottom: 10px;
+    margin-left: 20px;
+}
+
+dt{  
+    color: #555;
+}
+
+dl {  
+     clear: both;
+     display: block;
+}
+
+dt.strong{  
+    color: #777;
+}
+
+button{  
+    margin-bottom: 20px;
+}
+
+#logo { 
+        float: right;
+        height: 200px;
+        width: 200px;
+        display: block;
+        background-color:777;
+        background-image:url(/static/cooter.jpeg);
+        background-repeat:no-repeat;
+        overflow: auto;
+        z-index:-1;
+}
