@@ -1,6 +1,6 @@
+from functools import partial
 from retools import queue
 import inspect
-from functools import partial
 
 
 class Task(dict):

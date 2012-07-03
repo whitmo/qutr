@@ -35,7 +35,7 @@ def stream_o_twits(howmany):
     counter = count()
     r = requests.post('https://stream.twitter.com/1/statuses/sample.json',
                       data={'stall_warnings': False},
-                      auth=('whitmo', 'h00tch'))
+                      auth=('whitmo', 'pw'))
     for l in r.iter_lines():
         c = next(counter)
         data = {}
