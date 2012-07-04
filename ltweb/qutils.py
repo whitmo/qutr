@@ -33,20 +33,20 @@ def task(*args, **kwargs):
     return Task(*args, **kwargs)
 
 
-iotask = partial(task, events=dict(job_wrapper='ltweb.qsubs:teed_ioout'))
-viztask = partial(task, events=dict(job_wrapper='ltweb.qsubs:visout'))
+iotask = partial(task, events=dict(job_wrapper='qutr.qsubs:teed_ioout'))
+viztask = partial(task, events=dict(job_wrapper='qutr.qsubs:visout'))
 
 
-def setup_queue_manager(config, subscribers=dict(job_wrapper='ltweb.qsubs:prep_job')):
+def setup_queue_manager(config, subscribers=dict(job_wrapper='qutr.qsubs:prep_job')):
     if subscribers is None:
         subscribers = {}
     config.registry.qm = queue.QueueManager(subscribers=subscribers)
 
 
 def launch_worker(settings):
-    q, interval, block = (settings['ltweb.q'], 
-                          settings['ltweb.q_interval'], 
-                          settings['ltweb.q_block'])
+    q, interval, block = (settings['qutr.q'], 
+                          settings['qutr.q_interval'], 
+                          settings['qutr.q_block'])
     worker = queue.Worker(queues=[q])
     block = False or block.lower() != 'false' 
     worker.work(interval=float(interval), blocking=bool(block))

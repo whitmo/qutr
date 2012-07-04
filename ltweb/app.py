@@ -56,11 +56,11 @@ def main(global_config, **settings):
     config.add_route('job', '/api/jobs/{job_id}')
     config.add_route('job_stream', '/{job_id}')
     config.scan()
-    config.include('ltweb.io')
+    config.include('qutr.io')
     config.set_request_factory(Request)
     qutils.setup_queue_manager(config)
-    if settings['ltweb.worker'] != 'false':
+    if settings['qutr.worker'] != 'false':
         config.worker = gevent.spawn(qutils.launch_worker, settings)
-    config.registry.tasks = load_tasks_list(settings['ltweb.tasks'].strip())
+    config.registry.tasks = load_tasks_list(settings['qutr.tasks'].strip())
     return config.make_wsgi_app()
 

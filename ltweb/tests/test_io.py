@@ -1,7 +1,7 @@
 from mock import Mock
 
 def test_publish():
-    from ltweb.qsubs import publish
+    from qutr.qsubs import publish
     redis = Mock()
     data, redis = publish(redis, '123', "HI")
     assert redis.publish.called
@@ -25,7 +25,7 @@ def test_publish():
 
 ##     def test_jobs_collection_api(self):
 ##         from ..views import jobs
-##         post = dict(path='ltweb.tests.dummytasks.numbers_print_out')
+##         post = dict(path='qutr.tests.dummytasks.numbers_print_out')
 ##         request = testing.DummyRequest(post=post)
 ##         uid = '123'
 ##         request.enqueue = Mock(name='nq', return_value=uid)
