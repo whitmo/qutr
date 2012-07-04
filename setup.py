@@ -12,9 +12,9 @@ requires = [
     'waitress',
     ]
 
-setup(name='ltweb',
+setup(name='qutr',
       version='0.0',
-      description='ltweb',
+      description='qutr',
       long_description=README + '\n\n' +  CHANGES,
       classifiers=[
         "Programming Language :: Python",
@@ -31,13 +31,13 @@ setup(name='ltweb',
       zip_safe=False,
       install_requires=requires,
       tests_require=requires,
-      test_suite="ltweb",
+      test_suite="qutr",
       entry_points = """\
       [paste.app_factory]
-      main = ltweb.app:main
+      main = qutr.app:main
 
       [console_scripts]
-      ltweb-gworker = ltweb.gworker:run_worker
+      qutr-gworker = qutr.gworker:run_worker
       """,
       )
 

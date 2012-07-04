@@ -5,7 +5,7 @@
     
     
     <meta http-equiv='X-UA-Compatible' content='IE=emulateIE7' />
-    <title>Coverage for ltweb.app: 80%</title>
+    <title>Coverage for qutr.app: 80%</title>
     <link rel='stylesheet' href='style.css' type='text/css'>
     
     <script type='text/javascript' src='jquery-1.4.3.min.js'></script>
@@ -20,7 +20,7 @@
 
 <div id='header'>
     <div class='content'>
-        <h1>Coverage for <b>ltweb.app</b> :
+        <h1>Coverage for <b>qutr.app</b> :
             <span class='pc_cov'>80%</span>
         </h1>
         <img id='keyboard_icon' src='keybd_closed.png'>
@@ -188,12 +188,12 @@
 <p id='t56' class='stm run hide_run'>&nbsp; &nbsp; <span class='nam'>config</span><span class='op'>.</span><span class='nam'>add_route</span><span class='op'>(</span><span class='str'>&#39;job&#39;</span><span class='op'>,</span> <span class='str'>&#39;/api/jobs/{job_id}&#39;</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
 <p id='t57' class='stm run hide_run'>&nbsp; &nbsp; <span class='nam'>config</span><span class='op'>.</span><span class='nam'>add_route</span><span class='op'>(</span><span class='str'>&#39;job_stream&#39;</span><span class='op'>,</span> <span class='str'>&#39;/{job_id}&#39;</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
 <p id='t58' class='stm run hide_run'>&nbsp; &nbsp; <span class='nam'>config</span><span class='op'>.</span><span class='nam'>scan</span><span class='op'>(</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
-<p id='t59' class='stm run hide_run'>&nbsp; &nbsp; <span class='nam'>config</span><span class='op'>.</span><span class='nam'>include</span><span class='op'>(</span><span class='str'>&#39;ltweb.io&#39;</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
+<p id='t59' class='stm run hide_run'>&nbsp; &nbsp; <span class='nam'>config</span><span class='op'>.</span><span class='nam'>include</span><span class='op'>(</span><span class='str'>&#39;qutr.io&#39;</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
 <p id='t60' class='stm run hide_run'>&nbsp; &nbsp; <span class='nam'>config</span><span class='op'>.</span><span class='nam'>set_request_factory</span><span class='op'>(</span><span class='nam'>Request</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
 <p id='t61' class='stm run hide_run'>&nbsp; &nbsp; <span class='nam'>qutils</span><span class='op'>.</span><span class='nam'>setup_queue_manager</span><span class='op'>(</span><span class='nam'>config</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
-<p id='t62' class='stm run hide_run'>&nbsp; &nbsp; <span class='key'>if</span> <span class='nam'>settings</span><span class='op'>[</span><span class='str'>&#39;ltweb.worker&#39;</span><span class='op'>]</span> <span class='op'>!=</span> <span class='str'>&#39;false&#39;</span><span class='op'>:</span><span class='strut'>&nbsp;</span></p>
+<p id='t62' class='stm run hide_run'>&nbsp; &nbsp; <span class='key'>if</span> <span class='nam'>settings</span><span class='op'>[</span><span class='str'>&#39;qutr.worker&#39;</span><span class='op'>]</span> <span class='op'>!=</span> <span class='str'>&#39;false&#39;</span><span class='op'>:</span><span class='strut'>&nbsp;</span></p>
 <p id='t63' class='stm mis'>&nbsp; &nbsp; &nbsp; &nbsp; <span class='nam'>config</span><span class='op'>.</span><span class='nam'>worker</span> <span class='op'>=</span> <span class='nam'>gevent</span><span class='op'>.</span><span class='nam'>spawn</span><span class='op'>(</span><span class='nam'>qutils</span><span class='op'>.</span><span class='nam'>launch_worker</span><span class='op'>,</span> <span class='nam'>settings</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
-<p id='t64' class='stm run hide_run'>&nbsp; &nbsp; <span class='nam'>config</span><span class='op'>.</span><span class='nam'>registry</span><span class='op'>.</span><span class='nam'>tasks</span> <span class='op'>=</span> <span class='nam'>load_tasks_list</span><span class='op'>(</span><span class='nam'>settings</span><span class='op'>[</span><span class='str'>&#39;ltweb.tasks&#39;</span><span class='op'>]</span><span class='op'>.</span><span class='nam'>strip</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
+<p id='t64' class='stm run hide_run'>&nbsp; &nbsp; <span class='nam'>config</span><span class='op'>.</span><span class='nam'>registry</span><span class='op'>.</span><span class='nam'>tasks</span> <span class='op'>=</span> <span class='nam'>load_tasks_list</span><span class='op'>(</span><span class='nam'>settings</span><span class='op'>[</span><span class='str'>&#39;qutr.tasks&#39;</span><span class='op'>]</span><span class='op'>.</span><span class='nam'>strip</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
 <p id='t65' class='stm run hide_run'>&nbsp; &nbsp; <span class='key'>return</span> <span class='nam'>config</span><span class='op'>.</span><span class='nam'>make_wsgi_app</span><span class='op'>(</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
 <p id='t66' class='pln'><span class='strut'>&nbsp;</span></p>
                 

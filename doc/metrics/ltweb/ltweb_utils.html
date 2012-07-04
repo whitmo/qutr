@@ -5,7 +5,7 @@
     
     
     <meta http-equiv='X-UA-Compatible' content='IE=emulateIE7' />
-    <title>Coverage for ltweb.utils: 77%</title>
+    <title>Coverage for qutr.utils: 77%</title>
     <link rel='stylesheet' href='style.css' type='text/css'>
     
     <script type='text/javascript' src='jquery-1.4.3.min.js'></script>
@@ -20,7 +20,7 @@
 
 <div id='header'>
     <div class='content'>
-        <h1>Coverage for <b>ltweb.utils</b> :
+        <h1>Coverage for <b>qutr.utils</b> :
             <span class='pc_cov'>77%</span>
         </h1>
         <img id='keyboard_icon' src='keybd_closed.png'>
@@ -120,7 +120,7 @@
 <p id='t16' class='pln'><span class='strut'>&nbsp;</span></p>
 <p id='t17' class='stm run hide_run'><span class='key'>def</span> <span class='nam'>simple_route</span><span class='op'>(</span><span class='nam'>config</span><span class='op'>,</span> <span class='nam'>name</span><span class='op'>,</span> <span class='nam'>url</span><span class='op'>,</span> <span class='nam'>fn</span><span class='op'>,</span> <span class='nam'>renderer</span><span class='op'>=</span><span class='nam'>None</span><span class='op'>)</span><span class='op'>:</span><span class='strut'>&nbsp;</span></p>
 <p id='t18' class='stm run hide_run'>&nbsp; &nbsp; <span class='key'>if</span> <span class='key'>not</span> <span class='nam'>renderer</span><span class='op'>:</span><span class='strut'>&nbsp;</span></p>
-<p id='t19' class='stm run hide_run'>&nbsp; &nbsp; &nbsp; &nbsp; <span class='nam'>renderer</span> <span class='op'>=</span> <span class='str'>&quot;ltweb:templates/%s.html&quot;</span> <span class='op'>%</span> <span class='nam'>name</span><span class='strut'>&nbsp;</span></p>
+<p id='t19' class='stm run hide_run'>&nbsp; &nbsp; &nbsp; &nbsp; <span class='nam'>renderer</span> <span class='op'>=</span> <span class='str'>&quot;qutr:templates/%s.html&quot;</span> <span class='op'>%</span> <span class='nam'>name</span><span class='strut'>&nbsp;</span></p>
 <p id='t20' class='pln'><span class='strut'>&nbsp;</span></p>
 <p id='t21' class='stm run hide_run'>&nbsp; &nbsp; <span class='nam'>config</span><span class='op'>.</span><span class='nam'>add_route</span><span class='op'>(</span><span class='nam'>name</span><span class='op'>,</span> <span class='nam'>url</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
 <p id='t22' class='stm run hide_run'>&nbsp; &nbsp; <span class='nam'>config</span><span class='op'>.</span><span class='nam'>add_view</span><span class='op'>(</span><span class='nam'>fn</span><span class='op'>,</span> <span class='nam'>route_name</span><span class='op'>=</span><span class='nam'>name</span><span class='op'>,</span> <span class='nam'>renderer</span><span class='op'>=</span><span class='nam'>renderer</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
