@@ -2,7 +2,7 @@ from . import tee
 from .io import JobIO
 from contextlib import contextmanager
 from functools import partial
-from ltweb.io import jns
+from qutr.io import jns
 #import traceback
 import json
 
@@ -57,3 +57,4 @@ def publish(redis, uid, data):
     redis.lpush(lkey, data)
     redis.publish(skey, data)
     return data, redis
+

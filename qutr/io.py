@@ -6,7 +6,7 @@ import json
 
 
 class JobNamespace(BaseNamespace):
-    job_key = "ltweb:job_out:{job_id}"
+    job_key = "qutr:job_out:{job_id}"
     sub_key = 'jobs:{0}'
 
     def handle_data(self, data):
@@ -89,6 +89,7 @@ class JobIO(StringIO):
 def includeme(config):
     from . import utils
     utils.simple_route(config, 'socket_io', 'socket.io/*remaining', socketio_service)
+
 
 
 

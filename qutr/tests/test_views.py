@@ -18,7 +18,7 @@ class ViewTests(unittest.TestCase):
 
     def test_jobs_collection_api(self):
         from ..views import jobs
-        post = dict(path='ltweb.tests.dummytasks.numbers_print_out')
+        post = dict(path='qutr.tests.dummytasks.numbers_print_out')
         request = testing.DummyRequest(post=post)
         uid = '123'
         request.enqueue = Mock(name='nq', return_value=uid)
@@ -26,4 +26,5 @@ class ViewTests(unittest.TestCase):
         ## assert out['path'] == post['path']
         ## assert out['uid'] == uid
         ## assert request.enqueue.call_args[0][0] == post['path']
+
 
