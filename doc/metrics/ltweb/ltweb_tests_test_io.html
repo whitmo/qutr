@@ -5,7 +5,7 @@
     
     
     <meta http-equiv='X-UA-Compatible' content='IE=emulateIE7' />
-    <title>Coverage for ltweb.tests.test_io: 100%</title>
+    <title>Coverage for qutr.tests.test_io: 100%</title>
     <link rel='stylesheet' href='style.css' type='text/css'>
     
     <script type='text/javascript' src='jquery-1.4.3.min.js'></script>
@@ -20,7 +20,7 @@
 
 <div id='header'>
     <div class='content'>
-        <h1>Coverage for <b>ltweb.tests.test_io</b> :
+        <h1>Coverage for <b>qutr.tests.test_io</b> :
             <span class='pc_cov'>100%</span>
         </h1>
         <img id='keyboard_icon' src='keybd_closed.png'>
@@ -105,7 +105,7 @@
 <p id='t1' class='stm run hide_run'><span class='key'>from</span> <span class='nam'>mock</span> <span class='key'>import</span> <span class='nam'>Mock</span><span class='strut'>&nbsp;</span></p>
 <p id='t2' class='pln'><span class='strut'>&nbsp;</span></p>
 <p id='t3' class='stm run hide_run'><span class='key'>def</span> <span class='nam'>test_publish</span><span class='op'>(</span><span class='op'>)</span><span class='op'>:</span><span class='strut'>&nbsp;</span></p>
-<p id='t4' class='stm run hide_run'>&nbsp; &nbsp; <span class='key'>from</span> <span class='nam'>ltweb</span><span class='op'>.</span><span class='nam'>qsubs</span> <span class='key'>import</span> <span class='nam'>publish</span><span class='strut'>&nbsp;</span></p>
+<p id='t4' class='stm run hide_run'>&nbsp; &nbsp; <span class='key'>from</span> <span class='nam'>qutr</span><span class='op'>.</span><span class='nam'>qsubs</span> <span class='key'>import</span> <span class='nam'>publish</span><span class='strut'>&nbsp;</span></p>
 <p id='t5' class='stm run hide_run'>&nbsp; &nbsp; <span class='nam'>redis</span> <span class='op'>=</span> <span class='nam'>Mock</span><span class='op'>(</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
 <p id='t6' class='stm run hide_run'>&nbsp; &nbsp; <span class='nam'>data</span><span class='op'>,</span> <span class='nam'>redis</span> <span class='op'>=</span> <span class='nam'>publish</span><span class='op'>(</span><span class='nam'>redis</span><span class='op'>,</span> <span class='str'>&#39;123&#39;</span><span class='op'>,</span> <span class='str'>&quot;HI&quot;</span><span class='op'>)</span><span class='strut'>&nbsp;</span></p>
 <p id='t7' class='stm run hide_run'>&nbsp; &nbsp; <span class='key'>assert</span> <span class='nam'>redis</span><span class='op'>.</span><span class='nam'>publish</span><span class='op'>.</span><span class='nam'>called</span><span class='strut'>&nbsp;</span></p>
@@ -129,7 +129,7 @@
 <p id='t25' class='pln'><span class='strut'>&nbsp;</span></p>
 <p id='t26' class='pln'><span class='com'>##&nbsp; &nbsp;&nbsp; def test_jobs_collection_api(self):</span><span class='strut'>&nbsp;</span></p>
 <p id='t27' class='pln'><span class='com'>##&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; from ..views import jobs</span><span class='strut'>&nbsp;</span></p>
-<p id='t28' class='pln'><span class='com'>##&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; post = dict(path=&#39;ltweb.tests.dummytasks.numbers_print_out&#39;)</span><span class='strut'>&nbsp;</span></p>
+<p id='t28' class='pln'><span class='com'>##&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; post = dict(path=&#39;qutr.tests.dummytasks.numbers_print_out&#39;)</span><span class='strut'>&nbsp;</span></p>
 <p id='t29' class='pln'><span class='com'>##&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; request = testing.DummyRequest(post=post)</span><span class='strut'>&nbsp;</span></p>
 <p id='t30' class='pln'><span class='com'>##&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; uid = &#39;123&#39;</span><span class='strut'>&nbsp;</span></p>
 <p id='t31' class='pln'><span class='com'>##&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; request.enqueue = Mock(name=&#39;nq&#39;, return_value=uid)</span><span class='strut'>&nbsp;</span></p>
