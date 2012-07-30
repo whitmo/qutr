@@ -22,27 +22,29 @@ $(document).ready(function() {
                    'create': function(){
                        this.model.set({state:"Run"});
                    }
-                  }).persist($$.adapter.restful, {collection:'tasks'}),
+                  });
 
-                      taskgroup = $$({},
-                {format: "taskgroup"},
-                    {'create':function(e) {}}),
+     var taskgroup = $$({},
+                        {format: "taskgroup"},
+                        {'create':function(e) {}});
 
-        job = $$({url:null, path:null},
-                 {format:
-                         '<div class=\"\clearall">'
-                         + '<p><button id="closer">close</button></p>'
-                         + '<iframe data-bind="src=url" height="50%" scrolling="auto"></iframe>'
-                         + '</div>'},
-                 {'persist:save:success':function(){
-                      this.model.set({url:"/" + this.model.get().id});
-                      $$.document.append(this, '#container');
-                  },
-                  'click #closer': function(e){
-                      this.destroy();
-                  }
-                 }).persist($$.adapter.restful, {collection:'jobs',
-                 id:'uid'});
-        taskgroup.persist().gather(task, 'append', '#tasklist');
-        $$.document.append(taskgroup, '#container');
+     var job = $$({url:null, path:null},
+                  {format:
+                   '<div class=\"\clearall">'
+                   + '<p><button id="closer">close</button></p>'
+                   + '<iframe data-bind="src=url" height="50%" scrolling="auto"></iframe>'
+                   + '</div>'},
+                   {'persist:save:success':function(){
+                        this.model.set({url:"/" + this.model.get().id});
+                        $$.document.append(this, '#container');
+                    },
+                    'click #closer': function(e){
+                        this.destroy();}
+                   });
+
+    task.persist($$.adapter.restful, {collection:'tasks'});
+    job.persist($$.adapter.restful, {collection:'jobs', id:'uid'});
+    taskgroup.persist().gather(task, 'append', '#tasklist');
+
+    $$.document.append(taskgroup, '#container');
 });
