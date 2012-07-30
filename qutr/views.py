@@ -18,15 +18,15 @@ def index(request):
 
 
 @view_config(route_name='job', renderer='json', xhr=True)
-def job(request, key=io.JobNamespace.job_key, xhr=True):
+def job(request, key=io.jns.job_key):
     """
     Grabs entire backlog from redis.
     """
     uid = request.matchdict['job_id']
     jobkey = key.format(**request.matchdict)
     logger.info(jobkey)
-    lines = cxn.redis.lrange(jobkey, 0, -1) or []
-    return dict(uid=uid, lines=lines)
+    lines = reversed(cxn.redis.lrange(jobkey, 0, -1))
+    return dict(uid=uid, lines=list(lines))
 
 
 @view_config(route_name='tasks', renderer='json', xhr=True)
@@ -45,5 +45,6 @@ def jobs(request):
         request.response.headers.add('Location', url)
         return dict(uid=uid)
     raise NotImplemented(request.method)
+
 
 
