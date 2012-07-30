@@ -3,7 +3,6 @@ from .io import JobIO
 from contextlib import contextmanager
 from functools import partial
 from qutr.io import jns
-#import traceback
 import json
 
 
@@ -15,22 +14,21 @@ def teed_ioout(func, job, **kw):
 
     caveat: imagine it only will work with true forking queues
     """
-    uid = func.uid 
+    with prep_job(func, job, **kw):
+        uid = func.uid
 
-    jobio = JobIO(uid, func.publish)
+        jobio = JobIO(uid, func.publish)
+        tee.sysout(jobio).set()
+        tee.syserr(jobio).set()
 
-    tee.sysout(jobio).set()
-    tee.syserr(jobio).set()
-    try:
-        yield
-    finally:
-        func.publish(dict(event='done'))
-        import sys
-        del sys.stdout
-        del sys.stderr
+        try:
+            yield
+        finally:
+            func.publish(dict(event='done'))
+            import sys
+            del sys.stdout
+            del sys.stderr
  
-
-
 @contextmanager
 def prep_job(func, job, **kw):
     uid = func.uid = job.job_id
@@ -38,7 +36,7 @@ def prep_job(func, job, **kw):
     try:
         yield
     finally:
-        print "Job Done"
+        print "<<job:%s done>>" %job.job_id
 
 
 @contextmanager
@@ -57,4 +55,5 @@ def publish(redis, uid, data):
     redis.lpush(lkey, data)
     redis.publish(skey, data)
     return data, redis
+
 
