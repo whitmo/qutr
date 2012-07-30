@@ -55,7 +55,7 @@ def main(global_config, **settings):
     config.add_route('jobs', '/api/jobs')
     config.add_route('job', '/api/jobs/{job_id}')
     config.add_route('job_stream', '/{job_id}')
-    config.scan()
+    config.scan('qutr.views')
     config.include('qutr.io')
     config.set_request_factory(Request)
     qutils.setup_queue_manager(config)
@@ -63,5 +63,6 @@ def main(global_config, **settings):
         config.worker = gevent.spawn(qutils.launch_worker, settings)
     config.registry.tasks = load_tasks_list(settings['qutr.tasks'].strip())
     return config.make_wsgi_app()
+
 
 
