@@ -6,8 +6,8 @@ import json
 
 
 class JobNamespace(BaseNamespace):
-    job_key = "qutr:job_out:{job_id}"
-    sub_key = 'jobs:{0}'
+    job_key = "qutr:job:{job_id}"
+    sub_key = 'qutr:job:{0}'
 
     def handle_data(self, data):
         data = json.loads(data)
@@ -17,7 +17,8 @@ class JobNamespace(BaseNamespace):
 
     def listener(self, job_id):
         r = cxn.redis.pubsub()
-        r.subscribe(self.sub_key.format(job_id))
+        chan = self.sub_key.format(job_id)
+        r.subscribe(chan)
         for m in r.listen():
             if m['type'] == 'message':
                 data = m['data']
@@ -43,19 +44,17 @@ class JobNamespace(BaseNamespace):
 jns = JobNamespace
 
 
-class IndexNamespace(BaseNamespace):
-    def on_subscribe(self, data):
-        self.job_id = data['job_id']
-        self.jobkey = self.job_key.format(job_id=self.job_id)
-        self.spawn(self.listener, self.job_id)
+## class IndexNamespace(BaseNamespace):
+##     def on_subscribe(self, data):
+##         self.job_id = data['job_id']
+##         self.jobkey = self.job_key.format(job_id=self.job_id)
+##         self.spawn(self.listener, self.job_id)
 
 
 def socketio_service(request):
     retval = socketio_manage(request.environ,
-                             {'/jobs': JobNamespace,
-                              '/index': IndexNamespace}, 
+                             {'/jobs': JobNamespace}, 
                              request=request)
-
     return retval
 
 
@@ -64,8 +63,8 @@ class JobIO(StringIO):
     A stream-like object that write output to a redis pub channel and
     a list.
     """
-    list_key = JobNamespace.job_key
-    pub_key = JobNamespace.sub_key
+    list_key = jns.job_key
+    pub_key = jns.sub_key
 
     def __init__(self, uid, publish):
         self.publish = publish
@@ -87,8 +86,10 @@ class JobIO(StringIO):
 
 
 def includeme(config):
-    from . import utils
-    utils.simple_route(config, 'socket_io', 'socket.io/*remaining', socketio_service)
+    name = 'socket_io'
+    config.add_route(name, 'socket.io/*remaining')
+    config.add_view(socketio_service, route_name=name)
+
 
 
 
