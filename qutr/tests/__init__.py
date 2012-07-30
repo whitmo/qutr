@@ -6,7 +6,4 @@ def test_loadtasks():
     assert all(x in out[0] for x in ('path', 'name', 'desc'))
     
 
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/master
