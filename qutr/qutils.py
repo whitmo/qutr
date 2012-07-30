@@ -37,10 +37,8 @@ iotask = partial(task, events=dict(job_wrapper='qutr.qsubs:teed_ioout'))
 viztask = partial(task, events=dict(job_wrapper='qutr.qsubs:visout'))
 
 
-def setup_queue_manager(config, subscribers=dict(job_wrapper='qutr.qsubs:prep_job')):
-    if subscribers is None:
-        subscribers = {}
-    config.registry.qm = queue.QueueManager(subscribers=subscribers)
+def setup_queue_manager(config):
+    config.registry.qm = queue.QueueManager()
 
 
 def launch_worker(settings):
@@ -60,6 +58,7 @@ def launch_worker(settings):
         
 
         
+
 
 
 
