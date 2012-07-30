@@ -1,10 +1,10 @@
-var viz;
+var viz = {};
 viz.data = {};
+
 var blocker;
 
 $(document).ready(function() {
     var socket = io.connect('/jobs'); // disambiguate channelname and api endpoint?
-    socket.emit('subscribe', {job_id:job_id});
     var outputLine = $$(
         {
             model:{},
@@ -21,21 +21,30 @@ $(document).ready(function() {
                 format:$("#streamformat").html()
             },
             controller:{
-                'persist:loads:success': function(){
+                'persist:load:success': function(){
                     var stream = this;
-                    $.each(this.model.get().lines, this.addLine);
+                    var lines = this.model.get().lines;
+                    //console.log(lines.pop());
+                    $.each(lines, function(index, value){stream.addLine(value);});
                 },
+
                 'create': function(){
+                    socket.emit('subscribe', {job_id:job_id});
                     this.persist($$.adapter.restful, {collection:'jobs'});
                     this.load();
                     var stream = this;
 
-                    this.addLine = function(e){
-                        var newLine = $$(outputLine, {content: e});
+                    this.addLine = function(line){
+                        var newLine = $$(outputLine, {content: line});
                         stream.append(newLine, 'ul');
                         var el = newLine.view.$();
+                        return el;
+                    };
+
+                    this.addLineScroll = function(e){
+                        // fix to turn off if mouse action occurs
                         $('html, body').animate({
-                            scrollTop: el.offset().top
+                            scrollTop: stream.addLine(e).offset().top
                         }, 200);
                     };
 
@@ -44,7 +53,7 @@ $(document).ready(function() {
                         viz.data = e;
                     };
 
-                    this.load = function(e){
+                    this.qutrLoad = function(e){
                         if (e.type === 'viz'){
                             console.log(e);
                             var newviz = $$(visual, {url:e.url});
@@ -52,13 +61,15 @@ $(document).ready(function() {
                         }
 
                     };
-                    socket.on("load", this.load);
+
+                    socket.on("load", this.qutrLoad);
                     socket.on("stop", this.stop);
-                    socket.on("lineOut", this.addLine);
+                    socket.on("lineOut", this.addLineScroll);
                     socket.on("dataOut", this.handleData);
                 }
             }
         });
+
 
     $$.document.append(outputStream);
 });
