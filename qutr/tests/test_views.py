@@ -1,6 +1,8 @@
+from mock import Mock
+from mock import call
+from mock import patch
 from pyramid import testing
 import unittest
-from mock import Mock
 
 
 class ViewTests(unittest.TestCase):
@@ -22,9 +24,12 @@ class ViewTests(unittest.TestCase):
         request = testing.DummyRequest(post=post)
         uid = '123'
         request.enqueue = Mock(name='nq', return_value=uid)
-        out = jobs(request)
-        ## assert out['path'] == post['path']
-        ## assert out['uid'] == uid
-        ## assert request.enqueue.call_args[0][0] == post['path']
+        with patch("retools.global_connection.redis.publish") as rpub:
+            out = jobs(request)
+            assert rpub.call_args == call('jobs:123', '{"state": "queued"}')
+            assert out['uid'] == uid
+        assert request.enqueue.call_args == call(post['path'])
+
+
 
 
